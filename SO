@@ -1,0 +1,44 @@
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#include <unics.h>
+#include <cstring>
+
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    memset(&si, 0, sizeof(si));
+    si.cb = sizeof(si);
+    memset(&pi, 0, sizeof(pi));
+
+    if (strlen(argv[1]) > 20)
+        cout << "Argument too long, max number of characters is 20" << endl;
+    else if (strlen(argv[1]) == 1)
+        return int(argv[1]);
+    else
+    {
+        string arg = argv[1];
+        string tmp = arg.substr(0, arg.length() / 2);
+
+        string str_obj(tmp);
+        char *half = &str_obj[0];
+        cout << half << endl;
+
+        tmp = arg.substr(arg.length() / 2);
+        string strObj(tmp);
+        char *otherHalf = &strObj[0];
+        cout << otherHalf << endl;
+
+        if(fork()) {
+            argv[1] = half;
+        }
+        if(fork()) {
+            argv[1] = otherHalf;
+        }
+    };
+    return 0;
+}
